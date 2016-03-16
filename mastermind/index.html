@@ -13,8 +13,7 @@
         
         .circle {
             width: 1.5em;
-            height: 1.5em;
-            background: red;
+            height: 1.5em;            
             -moz-border-radius: 0.75em;
             -webkit-border-radius: 0.75em;
             border-radius: 0.75em;
@@ -22,9 +21,12 @@
         }
         
         .colorBox[data-code="1"] { background-color: red;}
-        .colorBox[data-code="2"]  { background-color: blue;}
-        .colorBox[data-code="3"]  { background-color: yellow;}
-        .colorBox[data-code="4"]  { background-color: green;}
+        .colorBox[data-code="2"] { background-color: blue;}
+        .colorBox[data-code="3"] { background-color: yellow;}
+        .colorBox[data-code="4"] { background-color: green;}
+        
+        .circle[data-hint-code="1"] { background: yellow;}
+        .circle[data-hint-code="2"] { background: black;}
         
 
         body{
@@ -100,10 +102,9 @@
         <p class="alert alert-info">This is a message</p>
         <p>x von 6 Versuchen <progress value="2" max="6"></progress></p>
 
-        <div id="game">
-        </div>        
+        <div id="game"></div>
         
-        <h2>Choose your color</h2>
+        <h2>Choose your color</h2>        
         <div class="ui">
             <div class="selection">
                 <div class="colorBox" id="input1"></div>
