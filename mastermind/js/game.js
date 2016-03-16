@@ -100,6 +100,55 @@ function getGamePlayHtml(inputArray, solutionArray) {
     return html;
 }
 
-console.log(calculateSolutionHint([1,1,1,1], [1,2,3,4]));
-console.log(calculateSolutionHint([1,2,3,4], [1,2,3,4]));
-console.log(calculateSolutionHint([1,2,3,4], [4,3,2,1]));
+//console.log(calculateSolutionHint([1,1,1,1], [1,2,3,4]));
+//console.log(calculateSolutionHint([1,2,3,4], [1,2,3,4]));
+//console.log(calculateSolutionHint([1,2,3,4], [4,3,2,1]));
+
+
+var canSubmit = function(){
+    return $('#input1').attr('data-code')
+        && $('#input2').attr('data-code')
+        && $('#input3').attr('data-code')
+        && $('#input4').attr('data-code');
+};
+
+var addGamePlay = function (inputArray){
+    var clonedTryTpl = $('#templates > .try').clone();    
+    var colorBoxes = $(clonedTryTpl).find('.colorBox');
+    colorBoxes[0] = $(colorBoxes[0]).attr('data-code', inputArray[0]);
+    colorBoxes[1] = $(colorBoxes[1]).attr('data-code', inputArray[1]);
+    colorBoxes[2] = $(colorBoxes[2]).attr('data-code', inputArray[2]);
+    colorBoxes[3] = $(colorBoxes[3]).attr('data-code', inputArray[3]);
+    $(clonedTryTpl).appendTo('#game');
+};
+
+var resetUi = function (){
+    $('#input1').attr('data-code', false);
+    $('#input2').attr('data-code', false);
+    $('#input3').attr('data-code', false);
+    $('#input4').attr('data-code', false);
+    
+    $('#submitButton').attr('disabled', 'disabled');
+};
+
+function useInput(dom){            
+    var code = $(dom).attr('data-code');
+    var targetInputControlNumber = $(dom).parent().attr('data-target-input');
+    var targetId = '#input' + targetInputControlNumber;
+    $(targetId).attr('data-code', code);
+    
+    if(canSubmit()){
+        $('#submitButton').attr('disabled', false);
+    }
+}
+
+function play(){
+    var inputArray = [];    
+    inputArray.push($('#input1').attr('data-code'));
+    inputArray.push($('#input2').attr('data-code'));
+    inputArray.push($('#input3').attr('data-code'));
+    inputArray.push($('#input4').attr('data-code'));
+    
+    addGamePlay(inputArray)
+    resetUi();
+}

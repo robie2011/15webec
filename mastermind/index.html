@@ -2,22 +2,16 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.css" rel="stylesheet" />
-
+    <title>Mastermind</title>
     <style>
-        div{
-            border: solid 1px red;
-        }
-        .try > div{
-            width: 4em;
-            height: 4em;
+        .colorBox{
+            width: 50px;
+            height: 50px;
             border: solid 2px #000000;
             display: inline-block;
         }
-
-        div.circle {
+        
+        .circle {
             width: 1.5em;
             height: 1.5em;
             background: red;
@@ -26,48 +20,133 @@
             border-radius: 0.75em;
             display: inline-block;
         }
+        
+        .colorBox[data-code="1"] { background-color: red;}
+        .colorBox[data-code="2"]  { background-color: blue;}
+        .colorBox[data-code="3"]  { background-color: yellow;}
+        .colorBox[data-code="4"]  { background-color: green;}
+        
+
+        body{
+            font-family: 'Verdana', sans-serif;     
+            text-align: center;
+            background: gray;
+            font-size: 0.8em;
+        }
+        div.container{
+            max-width: 800px;
+            text-align: left;
+            margin: auto;
+            background-color: white;
+            padding: 50px 100px 30px 100px;
+        }
+        
+        
+        div.try > div{ display: inline-block; }
+        
+        .hint{
+            width: 4em;
+            height: 4em;
+            border: solid 2px transparent;
+        }
+
+        
+        .ui .selection{            
+            
+        }
+        
+        .hid > div{
+            width: 54px;
+            display: inline-block;
+        }
+        
+        button.submit{
+            background: red;
+            color: white;
+            font-size: 1.5em;
+            padding: 10px;
+            min-width: 200px;
+            border: solid 1px black;
+            display: block;
+            margin-top: 30px;
+        }
     </style>
 </head>
-<body class="container">
-    <div class="col-lg-offset-1 col-lg-10">
-        <h1>Mastermind</h1>
-        <div class="row">
-            <p class="col-lg-3 col-md-3 col-x-3">
-                <label class="label label-info visible-lg">Large Display</label>
-                <label class="label label-info visible-md">Medium Display</label>
-                <label class="label label-info visible-sm">Small Display</label>
-                <label class="label label-info visible-xs">Extra Small display</label>        
-            </p>
-        </div>
-        
-        <p class="alert alert-info">This is a message</p>
-        
-        
-        <p>x von 6 Versuchen <progress value="2" max="6"></progress></p>
-
-        <div class="game row">
-            <div class="try col-lg-4 col-md-4 col-xs-5">
-                <div style="background-color: red"></div>
-                <div style="background-color: red"></div>
-                <div style="background-color: red"></div>
-                <div style="background-color: red"></div>
+<body unselectable="on" onselectstart="return false;">
+    <div id="templates" style="display:none;">
+        <div class="try">
+            <div class="input">
+                <div class="colorBox" data-code="1"></div>
+                <div class="colorBox" data-code="1"></div>
+                <div class="colorBox" data-code="1"></div>
+                <div class="colorBox" data-code="1"></div>
             </div>
-            <div class="col-lg-1 col-md-1 col-xs-3">
-                <div class="row">
+            <div class="hint">
+                <div>
                     <div class="circle"></div>
                     <div class="circle"></div>
                 </div>
-                <div class="row">
+                <div>
                     <div class="circle"></div>
                     <div class="circle"></div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="container">
+        <h1>Mastermind</h1>
+        
+        <p class="alert alert-info">This is a message</p>
+        <p>x von 6 Versuchen <progress value="2" max="6"></progress></p>
+
+        <div id="game">
+        </div>        
+        
+        <h2>Choose your color</h2>
+        <div class="ui">
+            <div class="selection">
+                <div class="colorBox" id="input1"></div>
+                <div class="colorBox" id="input2"></div>
+                <div class="colorBox" id="input3"></div>
+                <div class="colorBox" id="input4"></div>
+            </div>
+        </div>
+        
+        <div class="hid">            
+            <div id="input1" data-target-input="1">
+                <div class="colorBox" data-code="1" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="2" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="3" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="4" onclick="useInput(this)"></div>
+            </div>        
+            <div id="input2" data-target-input="2">
+                <div class="colorBox" data-code="1" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="2" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="3" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="4" onclick="useInput(this)"></div>
+            </div>        
+            <div id="input3" data-target-input="3">
+                <div class="colorBox" data-code="1" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="2" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="3" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="4" onclick="useInput(this)"></div>
+            </div>        
+            <div id="input4" data-target-input="4">
+                <div class="colorBox" data-code="1" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="2" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="3" onclick="useInput(this)"></div>
+                <div class="colorBox" data-code="4" onclick="useInput(this)"></div>
+            </div>
+        </div>                
+    
+        <button id="submitButton" disabled class="submit" onclick="play()">Play</button>
+        
+    </div>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/jquery.tmpl.js"/></script>
-    <script src="js/bootstrap.js"></script>
     <script src="js/game.js"></script>
 
     <script type="text/javascript">
