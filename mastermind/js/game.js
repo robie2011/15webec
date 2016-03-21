@@ -16,6 +16,11 @@ var getRandomArbitrary = function (min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 };
 
+var countTry = 1;
+var maxTry = 6;
+var hasWon = false;
+
+
 var solutionArray = [];
 solutionArray.push(getRandomArbitrary(1,5));
 solutionArray.push(getRandomArbitrary(1,5));
@@ -30,13 +35,13 @@ var calculateSolutionHint = function (inputArray, solutionArray) {
     var solutionNumberCounter = [0, 0, 0, 0];
     solutionArray.forEach(function(value){
         if (!solutionNumberCounter[value]) solutionNumberCounter[value] = 1;
-        else solutionNumberCounter[value] = ++solutionNumberCounter[value]; //POST INCREMENT DOESN'T WORK! WTF!
+        else solutionNumberCounter[value] = ++solutionNumberCounter[value];
     });
     
     var inputNumberCounter = [0, 0, 0, 0];    
     inputArray.forEach(function(value){
         if (!inputNumberCounter[value]) inputNumberCounter[value] = 1;
-        else inputNumberCounter[value] = ++inputNumberCounter[value]; //POST INCREMENT DOESN'T WORK! WTF!
+        else inputNumberCounter[value] = ++inputNumberCounter[value];
     });
     
     var totalCorrectColorAndPositionInput = 0;
@@ -69,7 +74,9 @@ var calculateSolutionHint = function (inputArray, solutionArray) {
 
 
 var canSubmit = function(){
-    return $('#input1').attr('data-code')
+    return countTry <= maxTry
+        && !hasWon
+        && $('#input1').attr('data-code')
         && $('#input2').attr('data-code')
         && $('#input3').attr('data-code')
         && $('#input4').attr('data-code');
@@ -96,8 +103,12 @@ var resetUi = function (){
     $('#input2').attr('data-code', false);
     $('#input3').attr('data-code', false);
     $('#input4').attr('data-code', false);
-    
+
     $('#submitButton').attr('disabled', 'disabled');
+
+    var infoText = "Versuch #"+countTry + " von Total " + maxTry;
+    $('#infoText').text(infoText);
+    $('#progress').val(countTry);
 };
 
 function useInput(dom){            
@@ -118,7 +129,13 @@ function play(){
     inputArray.push($('#input3').attr('data-code'));
     inputArray.push($('#input4').attr('data-code'));
     
-    var solutionHintArray = calculateSolutionHint(inputArray, solutionArray);    
+    var solutionHintArray = calculateSolutionHint(inputArray, solutionArray);
+    var solutionWasFound = solutionHintArray.filter(function(d){ return d == 2}).length == 4;
+    if(solutionWasFound){
+        hasWon = true;
+        alert('Congratulation - You win!');
+    }
     addGamePlay(inputArray, solutionHintArray);
+    countTry++;
     resetUi();
 }

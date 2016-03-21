@@ -20,10 +20,10 @@
             display: inline-block;
         }
         
-        .colorBox[data-code="1"] { background-color: red;}
-        .colorBox[data-code="2"] { background-color: blue;}
-        .colorBox[data-code="3"] { background-color: yellow;}
-        .colorBox[data-code="4"] { background-color: green;}
+        .colorBox[data-code="1"] { background-color: #FA5858;}
+        .colorBox[data-code="2"] { background-color: #8181F7;}
+        .colorBox[data-code="3"] { background-color: #F3F781;}
+        .colorBox[data-code="4"] { background-color: #58FAAC;}
         
         .circle[data-hint-code="1"] { background: yellow;}
         .circle[data-hint-code="2"] { background: black;}
@@ -98,9 +98,10 @@
     
     <div class="container">
         <h1>Mastermind</h1>
-        
-        <p class="alert alert-info">This is a message</p>
-        <p>x von 6 Versuchen <progress value="2" max="6"></progress></p>
+        <p id="infoText">Versuch #1 von Total 6</p>
+        <p>
+            <progress id="progress" value="1" max="6"></progress>
+        </p>
 
         <div id="game"></div>
         
