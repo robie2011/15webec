@@ -1,10 +1,44 @@
-﻿body {
+body {
     font-family: 'Segoe UI', sans-serif;    
     margin: 0 0 0 0;
     height: 100%;
     width: 100%; 
     position: absolute;
     background-color: gray;
+    text-align: center;
+}
+
+h3{
+    font-size: 4vh;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+p {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    font-size: 3vh;
+}
+
+table{
+    width: 100%;
+}
+
+td{
+    padding-top: 1vh;
+}
+
+tr:nth-child(odd){
+    background-color: black;
+}
+
+
+button{
+    width: 20vw;
+    height: 5vh;
+    background-color: black;
+    color: white;
+    font-size: 3vh;
+    border: solid 1px transparent;
 }
 
 #map{
@@ -29,7 +63,43 @@
     padding: 2vh;    
 }
 
+#menu form{
+    display: inline;
+    margin-left: 2vw;
+}
+
+
 h1{
     font-size: 4vh;
     margin: 0 0 0 0;
+    display: inline-block;
 }
+
+#what, #who{
+    position: relative;
+    top: 10vh;
+    
+    width: 80vw;    
+    margin: auto;
+    background-color: darkred;
+    color: white;
+    display: none;    
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+
+
+
+/*
+    Hack to remove google icon
+*/
+.gmnoprint:not(.gm-bundled-control) {
+        display: none;
+    }
+
+    .gm-bundled-control .gmnoprint {
+        display: block;
+    }
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+a[href^="https://www.google.com/maps"]{display:none !important}

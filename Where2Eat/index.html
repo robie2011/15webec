@@ -3,29 +3,43 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TypeScript HTML App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Where2Eat</title>
     <link rel="stylesheet" href="app.css" type="text/css" />    
 </head>
 <body>
     <div id="top-container">
         <div id="menu">
-            <h1>Where2Eat</h1>
+            <h1 onclick="app.refreshPosition()">Where2Eat</h1>
+            <form>
+                <button type="button" id="whatBtn" onclick="showWhat();">What</button>
+                <button type="button" id="whoBtn" onclick="showWhoResults();">Who</button>
+            </form>
         </div>
     </div>
     <div id="map">
     </div>
+    <div id="what">
+        <table>
+            <tr><td><h3>Pizza</h3></td></tr>
+            <tr><td><h3>Pasta</h3></td></tr>
+            <tr><td><h3>Kebab</h3></td></tr>
+            <tr><td><h3>Burger</h3></td></tr>
+        </table>       
+    </div>
 
-    <!--<form>
-            <input name="what" value="burger" />
-            <button onclick="app.searchForPlaceNearby(this.form.what.value, 20); return false;">Position</button>
-            <button>Flavors</button>
-        </form>-->
-    <!--<div class="column"><div id="map"></div></div>
-    <div class="column">Selected</div>-->
+    <div id="who">
+        <table></table>
+    </div>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>
     <script src="app.js"></script>
+    <script type="text/javascript">
+        function disableselect(e) { return false }
+        document.onselectstart = disableselect;
+        document.onmousedown = disableselect;
+    </script>
 </body>
 </html>
