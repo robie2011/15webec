@@ -6,36 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TypeScript HTML App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />    
-    <style>
-        .column {
-            border: solid 1px gray;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            height: 500px;
-            width: 500px;
-        }
-    </style>
 </head>
 <body>
-    <div class="ui one column grid">
-        <div class="column"><h1>Where2Eat</h1></div>
-        <div id="mapColumn" class="column">
-            <form>
-                <input name="what" value="burger" />
-                <button onclick="app.searchForPlaceNearby(this.form.what.value, 20); return false;">Position</button>
-                <button>Flavors</button>
-            </form>
+    <div id="top-container">
+        <div id="menu">
+            <h1>Where2Eat</h1>
         </div>
-        <div class="column"><div id="map"></div></div>
-        <div class="column">Selected</div>
     </div>
+    <div id="map">
+    </div>
+
+    <!--<form>
+            <input name="what" value="burger" />
+            <button onclick="app.searchForPlaceNearby(this.form.what.value, 20); return false;">Position</button>
+            <button>Flavors</button>
+        </form>-->
+    <!--<div class="column"><div id="map"></div></div>
+    <div class="column">Selected</div>-->
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>
