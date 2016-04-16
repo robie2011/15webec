@@ -23,7 +23,8 @@ table, tbody, tr, td{
 }
 
 td{
-    padding-top: 1vh;    
+    padding-top: 3vh;    
+    padding-bottom: 2vh;    
 }
 
 tr:nth-child(odd){
