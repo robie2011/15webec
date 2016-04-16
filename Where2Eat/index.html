@@ -5,33 +5,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Where2Eat</title>
+    <title>where2eat</title>
     <link rel="stylesheet" href="app.css" type="text/css" />    
 </head>
 <body>
     <div id="top-container">
         <div id="menu">
-            <h1 onclick="app.refreshPosition()">Where2Eat</h1>
+            <h1 onclick="app.refreshPosition()">where2eat</h1>
             <form>
                 <button type="button" id="whatBtn" onclick="showWhat();">What</button>
-                <button type="button" id="whoBtn" onclick="showWhoResults();">Who</button>
+                <button type="button" id="whoBtn" onclick="showWhoResults();">Who</button>                
             </form>
         </div>
     </div>
-    <div id="map">
-    </div>
-    <div id="what">
-        <table>
+
+    <div id="map"></div>
+
+    <table id="what">
+        <tbody>
             <tr><td><h3>Pizza</h3></td></tr>
             <tr><td><h3>Pasta</h3></td></tr>
             <tr><td><h3>Kebab</h3></td></tr>
             <tr><td><h3>Burger</h3></td></tr>
-        </table>       
-    </div>
+        </tbody>
+    </table>
 
-    <div id="who">
-        <table></table>
-    </div>
+    <table id="who"></table>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>

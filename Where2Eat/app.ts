@@ -1,17 +1,19 @@
 ﻿/**
  * Map Reference: https://developers.google.com/maps/documentation/javascript/reference?hl=de#release-version
  * Place Tutorial: https://developers.google.com/maps/documentation/javascript/examples/place-search
- * TODO: Markers removing https://developers.google.com/maps/documentation/javascript/examples/marker-remove?hl=de
+ * Markers https://developers.google.com/maps/documentation/javascript/examples/marker-remove?hl=de
  */
-
-    //todo
-var infowindow;
 
 class where2Eat {
     private position = { lat: 0, lng: 0};
-    private apiKey = "AIzaSyBVJCxnnxByXHof9D-Dw_brILrxQVgF9Ik";
     private googleMap;
     private whoResults: Object[] = [];
+    private infowindow = new google.maps.InfoWindow();
+    private markerColors = {
+        openHourUnknown: '585858|FFFFFF',
+        isOpen: '04B431|FFFFFF',
+        isClosed: 'FF0000|FFFFFF'
+    }
 
 
     private setPosition: PositionCallback = p => {
@@ -31,8 +33,7 @@ class where2Eat {
 
     public setGoogleMap = m => this.googleMap = m;
 
-    public searchForPlaceNearby = (keyword: string, radius: number){
-        infowindow = new google.maps.InfoWindow();
+    public searchForPlaceNearby = (keyword: string, radius: number){        
         var placeService = new google.maps.places.PlacesService(this.googleMap);
         placeService.nearbySearch({
             location: this.position,
@@ -64,17 +65,27 @@ class where2Eat {
     }
     private createMarker = (place, number) => {
         var placeLoc = place.geometry.location;
+        console.log(place);
+
+
+        var color = this.markerColors.openHourUnknown;
+        if (place.opening_hours) {
+            color = place.opening_hours.open_now ? this.markerColors.isOpen : this.markerColors.isClosed;
+        }
+
+
         var marker = new google.maps.Marker({
             map: this.googleMap,
             position: place.geometry.location,
-            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+ number + '|FF0000|000000'
+            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + number + '|' + color
         });
 
         this.markers.push(marker);
 
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent(place.name);
-            infowindow.open(this.map, this);
+        var vm = this;
+        google.maps.event.addListener(marker, 'click', function() {
+            vm.infowindow.setContent(place.name);
+            vm.infowindow.open(this.map, this);
         });
     }
 
@@ -110,7 +121,7 @@ class where2Eat {
 
 var app = new where2Eat();
 
-var hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront = (elementId: string) => {
+var hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront = (elementId: string) => {
     if ($(elementId).css('display') == 'block') {
         $(elementId).css('display', 'none');
         $('#map').css('z-index', '');
@@ -118,40 +129,31 @@ var hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront = (elementId: string) 
     }
     $(elementId).css('display', 'block');
     $('#map').css('z-index', -1);
+
+    var otherElementIdToHide = (elementId == '#who') ? '#what' : '#who';
+    $(otherElementIdToHide).css('display', 'none');
+
     return false;
 }
 
 var showWhat = () => {
-    if (hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#what')) {
-        return;
-    }
-    hideWho();
+    hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#what');
 };
-
-var hideWhat = () => {
-    $('#map').css('z-index', '');
-    $('#what').css('display', 'none');
-}
-
-var hideWho = () => {
-    $('#who').css('display', 'none');
-}
 
 var initWhatCallbackHandlers = () => {
     $('#what td').click(function () {
         app.setFoodPreference($(this).context.innerText);
-        hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#what');
+        hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#what');
     });
 }
 
 var showWhoResults = () => {
-    if (hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#who')) {
+    if (hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#who')){
         return;
     }
 
-    hideWhat();
     var results = app.getWhos();
-    var resultList = $('#who>table');
+    var resultList = $('#who');
     resultList.empty();
      
     for (var i = 0; i < results.length; i++) {
@@ -162,6 +164,4 @@ var showWhoResults = () => {
     }
 }
 
-
 initWhatCallbackHandlers();
-

@@ -1,16 +1,19 @@
 /**
  * Map Reference: https://developers.google.com/maps/documentation/javascript/reference?hl=de#release-version
  * Place Tutorial: https://developers.google.com/maps/documentation/javascript/examples/place-search
- * TODO: Markers removing https://developers.google.com/maps/documentation/javascript/examples/marker-remove?hl=de
+ * Markers https://developers.google.com/maps/documentation/javascript/examples/marker-remove?hl=de
  */
-//todo
-var infowindow;
 var where2Eat = (function () {
     function where2Eat() {
         var _this = this;
         this.position = { lat: 0, lng: 0 };
-        this.apiKey = "AIzaSyBVJCxnnxByXHof9D-Dw_brILrxQVgF9Ik";
         this.whoResults = [];
+        this.infowindow = new google.maps.InfoWindow();
+        this.markerColors = {
+            openHourUnknown: '585858|FFFFFF',
+            isOpen: '04B431|FFFFFF',
+            isClosed: 'FF0000|FFFFFF'
+        };
         this.setPosition = function (p) {
             _this.position = { lat: p.coords.latitude, lng: p.coords.longitude };
             _this.googleMap.setCenter(_this.position);
@@ -25,7 +28,6 @@ var where2Eat = (function () {
         };
         this.setGoogleMap = function (m) { return _this.googleMap = m; };
         this.searchForPlaceNearby = function (keyword, radius) {
-            infowindow = new google.maps.InfoWindow();
             var placeService = new google.maps.places.PlacesService(_this.googleMap);
             placeService.nearbySearch({
                 location: _this.position,
@@ -54,15 +56,21 @@ var where2Eat = (function () {
         };
         this.createMarker = function (place, number) {
             var placeLoc = place.geometry.location;
+            console.log(place);
+            var color = _this.markerColors.openHourUnknown;
+            if (place.opening_hours) {
+                color = place.opening_hours.open_now ? _this.markerColors.isOpen : _this.markerColors.isClosed;
+            }
             var marker = new google.maps.Marker({
                 map: _this.googleMap,
                 position: place.geometry.location,
-                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + number + '|FF0000|000000'
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + number + '|' + color
             });
             _this.markers.push(marker);
+            var vm = _this;
             google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(place.name);
-                infowindow.open(this.map, this);
+                vm.infowindow.setContent(place.name);
+                vm.infowindow.open(this.map, this);
             });
         };
         this.refreshPosition = function () {
@@ -90,7 +98,7 @@ var where2Eat = (function () {
     return where2Eat;
 })();
 var app = new where2Eat();
-var hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront = function (elementId) {
+var hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront = function (elementId) {
     if ($(elementId).css('display') == 'block') {
         $(elementId).css('display', 'none');
         $('#map').css('z-index', '');
@@ -98,34 +106,25 @@ var hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront = function (elementId)
     }
     $(elementId).css('display', 'block');
     $('#map').css('z-index', -1);
+    var otherElementIdToHide = (elementId == '#who') ? '#what' : '#who';
+    $(otherElementIdToHide).css('display', 'none');
     return false;
 };
 var showWhat = function () {
-    if (hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#what')) {
-        return;
-    }
-    hideWho();
-};
-var hideWhat = function () {
-    $('#map').css('z-index', '');
-    $('#what').css('display', 'none');
-};
-var hideWho = function () {
-    $('#who').css('display', 'none');
+    hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#what');
 };
 var initWhatCallbackHandlers = function () {
     $('#what td').click(function () {
         app.setFoodPreference($(this).context.innerText);
-        hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#what');
+        hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#what');
     });
 };
 var showWhoResults = function () {
-    if (hideMenuIfActiveAndActiveMapOtherwiseBrigItToTheFront('#who')) {
+    if (hideMenuIfActiveAndActivateMapOtherwiseBrigItToTheFront('#who')) {
         return;
     }
-    hideWhat();
     var results = app.getWhos();
-    var resultList = $('#who>table');
+    var resultList = $('#who');
     resultList.empty();
     for (var i = 0; i < results.length; i++) {
         var r = "<h3>" + (i + 1) + " " + results[i].name + " </h3>";

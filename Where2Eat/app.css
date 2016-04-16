@@ -1,10 +1,9 @@
 body {
     font-family: 'Segoe UI', sans-serif;    
     margin: 0 0 0 0;
+    padding:0;
     height: 100%;
     width: 100%; 
-    position: absolute;
-    background-color: gray;
     text-align: center;
 }
 
@@ -19,12 +18,12 @@ p {
     font-size: 3vh;
 }
 
-table{
-    width: 100%;
+table, tbody, tr, td{
+  display: block;
 }
 
 td{
-    padding-top: 1vh;
+    padding-top: 1vh;    
 }
 
 tr:nth-child(odd){
